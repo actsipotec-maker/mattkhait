@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Home IoT Panel</title>
+    
+    <!-- นำเข้า FontAwesome สำหรับใช้ไอคอน -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CSS สำหรับตกแต่ง UI พื้นฐาน --- */
+        body {
+            background-color: #0f1015;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .control-panel {
+            background-color: #1a1b26;
+            border-radius: 20px;
+            padding: 40px;
+            width: 350px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #2a2b36;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .neon-title {
+            color: #00ffff;
+            text-transform: uppercase;
+            font-size: 24px;
+            letter-spacing: 2px;
+            margin: 0 0 10px 0;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+
+        .subtitle {
+            color: #8a8b96;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .channel-row {
+            background-color: #232431;
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .channel-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 16px;
+        }
+
+        .channel-info i {
+            color: #00ffff;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* --- CSS สำหรับ Toggle Switch --- */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #00ffff;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* --- CSS สำหรับเครดิตผู้พัฒนา (อัปเดตใหม่ตามภาพ) --- */
+        .developer-credit {
+            text-align: center;
+            margin-top: 35px; /* ระยะห่างจากสวิตช์ตัวสุดท้าย */
+            font-size: 13px;
+            line-height: 1.8; /* ระยะห่างระหว่างบรรทัด */
+            color: #8a8b96; /* สีเทาสำหรับชื่อและแผนก */
+        }
+
+        .developer-credit .credit-title {
+            color: #00ffff; /* สีฟ้าสว่างสำหรับคำว่า ผู้พัฒนาระบบ */
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="control-panel">
+        <div class="header">
+            <h1 class="neon-title">Smart Home</h1>
+            <p class="subtitle">ESP8266 IoT Control Panel</p>
+        </div>
+
+        <!-- ช่องที่ 1 (D1) -->
+        <div class="channel-row">
+            <div class="channel-info">
+                <i class="fa-solid fa-lightbulb"></i>
+                <span>ช่องที่ 1 (D1)</span>
+            </div>
+            <label class="switch">
+                <input type="checkbox" id="ch1">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <!-- ช่องที่ 2 (D2) -->
+        <div class="channel-row">
+            <div class="channel-info">
+                <i class="fa-solid fa-plug"></i>
+                <span>ช่องที่ 2 (D2)</span>
+            </div>
+            <label class="switch">
+                <input type="checkbox" id="ch2">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <!-- ช่องที่ 3 (D5) -->
+        <div class="channel-row">
+            <div class="channel-info">
+                <i class="fa-solid fa-tv"></i>
+                <span>ช่องที่ 3 (D5)</span>
+            </div>
+            <label class="switch">
+                <input type="checkbox" id="ch3">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <!-- ช่องที่ 4 (D6) -->
+        <div class="channel-row">
+            <div class="channel-info">
+                <i class="fa-solid fa-snowflake"></i>
+                <span>ช่องที่ 4 (D6)</span>
+            </div>
+            <label class="switch">
+                <input type="checkbox" id="ch4">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <!-- 👇 ส่วนแสดงเครดิตผู้พัฒนา (เพิ่มชื่อของคุณแล้ว) 👇 -->
+        <div class="developer-credit">
+            <div class="credit-title">ผู้พัฒนาระบบ</div>
+            <div>นาย ปฐมพร นาดี</div>
+            <div>แผนกอิเล็กทรอนิกส์</div>
+            <div>วิทยาลัยสารพัดช่างศรีสะเกษ</div>
+        </div>
+        <!-- 👆 สิ้นสุดส่วนเครดิตผู้พัฒนา 👆 -->
+
+    </div>
+
+    <!-- --- JavaScript สำหรับเชื่อมต่อ Firebase --- -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        // ⚠️ อย่าลืมนำค่า Firebase Config ของคุณมาใส่ตรงนี้เหมือนเดิมนะครับ ⚠️
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        function setupChannel(switchId, dbPath) {
+            const toggleSwitch = document.getElementById(switchId);
+            const dbRef = ref(db, dbPath);
+
+            toggleSwitch.addEventListener('change', (event) => {
+                set(dbRef, event.target.checked)
+                    .then(() => console.log(`${switchId} ถูกปรับเป็น ${event.target.checked}`))
+                    .catch((error) => console.error("เกิดข้อผิดพลาด:", error));
+            });
+
+            onValue(dbRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data !== null) {
+                    toggleSwitch.checked = data;
+                }
+            });
+        }
+
+        setupChannel('ch1', 'relays/ch1');
+        setupChannel('ch2', 'relays/ch2');
+        setupChannel('ch3', 'relays/ch3');
+        setupChannel('ch4', 'relays/ch4');
+    </script>
+</body>
+</html>// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyAzLYp0hdEyTAFxtVXtReSjfyxnmLguFoE",
+  authDomain: "myliot2026.firebaseapp.com",
+  projectId: "myliot2026",
+  storageBucket: "myliot2026.firebasestorage.app",
+  messagingSenderId: "107264973072",
+  appId: "1:107264973072:web:4a8d38d5a967848a7bed95",
+  measurementId: "G-VKE9FDP3YG"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
